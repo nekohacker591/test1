@@ -1,0 +1,37 @@
+<div class="popup-not-supported">
+    <div class="popup-head">
+        <div class="popup-head-logo"><img src="../assets/popup-logo.png" alt=""> for <span>{{::config.platform}}</span></div>
+        <div class="popup-head-license" ng-class="{'popup-head-license-basic':(session.license==1),'popup-head-license-premium':(session.license==2)}"></div>
+        <div class="popup-head-user dd" ng-class="{'dd-open':notsupported.ui.userListOpen}" mouseaway="notsupported.ui.setUserListOpen(false)">
+            <a href="javascript:" class="dd-trigger" ng-click="notsupported.ui.setUserListOpen()"><span>{{::session.name}}</span><i class="gingericon-dropdown-arrow"></i></a>
+            <div class="dd-content" ng-mouseover="notsupported.ui.setUserListOpen(true)">
+                <div class="popup-head-user-body">
+                    <div class="popup-head-user-body-email">{{::session.email}}</div>
+                </div>
+                <div class="popup-head-user-foot">
+                    <a ng-click="notsupported.ui.logout()" class="btn">Log out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popup-body popup-body-nonsupported">
+        <div class="popup-container">
+        <div class="popup-body-nonsupported-title">
+            <img class="popup-body-favicon" ng-if="notsupported.faviconUrl" ng-src="{{notsupported.faviconUrl}}"> {{notsupported.currentHostName}} Not Supported
+        </div>
+        <p>
+            We hope to support {{notsupported.currentHostName}} in the future. But until then, you can use our <br><a href="https://www.gingersoftware.com/ginger-writer" target="_blank" rel="noopener">Ginger Writer</a>.
+        </p>
+        </div>
+    </div>
+
+    <div class="popup-foot">
+
+        <div class="popup-container">
+        <div class="popup-foot-row mute" >
+            <a class="popup-foot-app" target="_blank" href="https://www.gingersoftware.com/ginger-writer" rel="noopener"> <i class="gingericon-writer"></i> Ginger Writer</a>
+            <a class="popup-foot-app" target="_blank" href="https://www.gingersoftware.com/myginger/apps"> <i class="gingericon-apps"></i> Ginger Apps</a>
+        </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,272 @@
+<div class="popup-home">
+    <div ng-class="{'popup-campaign':main.hasActiveCampaign}">
+        <div class="popup-head">
+            <div class="popup-head-logo"><img src="../assets/ginger-logo.svg" alt=""></div>
+
+            <a title="Go Premium" target="_blank" ng-if="session.license !== undefined && session.license!==2" href="https://www.gingersoftware.com/online_store/ginger_upgrade?cp=GingerChromeExtension-GoPremiumButton-MiniWriter&autk={{session.token}}" class="popup-head-license popup-head-license-basic" ng-click="main.reportPremiumClicked()"></a>
+
+            <div class="popup-head-user dd" ng-class="{'dd-open':main.ui.userListOpen}" mouseaway="main.ui.setUserListOpen(false)">
+                <a class="dd-trigger" ng-if="session && !session.isAnonym" ng-click="main.ui.setUserListOpen()">
+                    <i ng-class="session.license === 2 ? 'gingericon-mini-writer-profile-premium' : 'gingericon-mini-writer-profile'"></i>
+                </a>
+                <a class="dd-trigger" ng-if="!session || session.isAnonym" ng-click="main.ui.openAuthPage()">
+                    <i class="gingericon-mini-writer-profile"></i>
+                </a>
+                <div class="dd-content" ng-mouseover="main.ui.setUserListOpen(true)">
+                    <div class="popup-head-user-body" ng-if="session.email">
+                        <div class="popup-head-user-body-email" ng-class="{'premium': session.license===2}">{{session.email}}</div>
+                        <span class="popup-head-user-body-premium" title="Go Premium" ng-if="session.license===2"></span>
+
+                    </div>
+                    <div class="popup-head-user-foot">
+                        <a target="_blank" href="https://www.gingersoftware.com/PersonalDictionary/{{session.token}}" rel="noopener" class="btn">Personal Dictionary</a>
+                        <a ng-click="main.ui.logout()" class="btn">Log out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-body">
+            <div class="popup-body-settings" ng-class="{'light' : main.ui.rephraseOpen}">
+                <div class="popup-body-row" ng-if="main.currentHost.indexOf('0000000000')===-1">
+                    <div class="popup-body-col enable-corrections" ng-class="{'lighter' : !session || session.isAnonym}">
+                        <div class="popup-body-row-input">
+                            <span ginger-switch ng-value="main.isGingerEnabled" ng-disabled="!main.isSiteSupported || !session || session.isAnonym"></span>
+                        </div>
+                        <div class="popup-body-row-label">
+                        <span ng-if="main.isSiteSupported">
+                            Enable corrections on <img class="popup-body-favicon" ng-if="main.faviconUrl" ng-src="{{main.faviconUrl}}"> <b>{{main.currentHost}}</b>
+                        </span>
+                            <span class="popup-body-not-supported" ng-if="!main.isSiteSupported">
+                            <b>{{main.currentHostName}}</b> not yet supported
+                        </span>
+                        </div>
+                    </div>
+                    <div class="popup-body-col dialect">
+                        <div class="popup-body-row-label">
+                            Dialect
+                        </div>
+                        <div class="dd dialect" ng-class="{'dd-open':main.ui.dialectListOpen}" mouseaway="main.ui.setDialectListOpen(false)">
+                            <a class="dd-trigger" ng-click="main.ui.setDialectListOpen()">
+                                <span ng-if="main.settings.dialect !== 'indifferent'">English</span> {{main.settings.dialect}}
+                            </a>
+                            <div class="dd-content" ng-mouseover="main.ui.setDialectListOpen(true)">
+                                <a class="btn" ng-click="main.dialectChanged('UK')">
+                                    English UK
+                                </a>
+                                <a class="btn" ng-click="main.dialectChanged('US')">
+                                    English US
+                                </a>
+                                <a class="btn" ng-click="main.dialectChanged('indifferent')">
+                                    Indifferent
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="popup-body-row double-click" ng-class="{'lighter' : !session || session.isAnonym}">
+                    <div class="popup-body-row-input">
+                        <span ginger-switch ng-disabled="!session || session.isAnonym" ng-value="main.settings.enableDefinitionsAndSynonyms"></span>
+                    </div>
+                    <div class="popup-body-row-label">
+                        Double-click for synonyms and definitions (all sites)
+                    </div>
+                </div>
+            </div>
+
+
+            <!--DomProg Premium banner-->
+            <div ng-if="main.premiumBanner.isShow"
+                 class="popup-body-row popup-body__premium-banner">
+
+                <span class="popup-body__premium-banner__close" ng-click="main.premiumBanner.hide()">✕</span>
+
+                <span class="popup-body__premium-banner__icon">
+                    <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0.886355 15.3004L0.88635 15.3004L0.885134 15.3025C0.647489 15.7235 0.5 16.1878 0.5 16.6799C0.5 17.4454 0.77155 18.1549 1.28171 18.675C1.79417 19.1974 2.51921 19.5 3.37008 19.5H18.6299C19.4808 19.5 20.2058 19.1974 20.7183 18.675C21.2285 18.1549 21.5 17.4454 21.5 16.6799C21.5 16.2063 21.3817 15.729 21.1215 15.2876L13.4795 1.93229C13.4794 1.93201 13.4792 1.93174 13.4791 1.93146C12.9461 0.993153 11.9666 0.5 11.0049 0.5C10.0345 0.5 9.05429 0.992268 8.52085 1.93161C8.52072 1.93184 8.5206 1.93207 8.52047 1.93229L0.886355 15.3004ZM10.718 11.8493L10.7179 11.8458L10.582 6.67658C10.582 6.6761 10.582 6.67563 10.582 6.67515C10.58 6.55751 10.6207 6.47894 10.6753 6.42717C10.7324 6.37288 10.8347 6.32092 10.9951 6.32092C11.2866 6.32092 11.421 6.49754 11.418 6.68474C11.418 6.68519 11.418 6.68564 11.418 6.68608L11.2821 11.8458H11.2821L11.282 11.8495C11.2788 12.0193 11.2331 12.0777 11.2173 12.0936C11.2032 12.1077 11.1538 12.1482 11.0049 12.1482C10.8459 12.1482 10.7952 12.1052 10.7818 12.0916C10.7658 12.0753 10.7212 12.0168 10.718 11.8493ZM11.0049 15.3336C10.6736 15.3336 10.4267 15.0679 10.4267 14.8162C10.4267 14.5492 10.67 14.2892 11.0049 14.2892C11.3556 14.2892 11.5928 14.5454 11.5928 14.8162C11.5928 15.0717 11.352 15.3336 11.0049 15.3336Z" fill="#E63939" stroke="white"/>
+                    </svg>
+                </span>
+
+                <div class="popup-body__premium-banner__text" ng-switch="session.falsePremium">
+                    <span ng-switch-when="1">
+                        We haven't received your payment in the past 90 days. Please purchase a new subscription of Ginger <strong>within 14 days</strong> to keep your premium benefits.
+                    </span>
+
+                    <span ng-switch-when="2">
+                        <strong>Your Ginger Premium subscription has expired.</strong> Please purchase a new subscription <strong>within 14 days</strong> to keep your premium benefits.
+                    </span>
+
+                    <span ng-switch-default>
+                        <strong>Your Ginger Premium subscription will be expiring soon.</strong> We have completely redesigned Ginger Writer and are certain you will enjoy the premium benefits we offer now, more than ever. We would like to thank you for being a loyal customer by offering you a special discount of 60% off our Premium plans. Please purchase a new subscription of Ginger <strong>within 14 days</strong> to keep your premium benefits.
+                    </span>
+
+                </div>
+
+                <div class="popup-body__premium-banner__button"
+                     ng-switch="session.falsePremium">
+
+
+                    <a target="_blank"
+                       ng-switch-when="3"
+                       href="https://www.gingersoftware.com/online_store/ginger_upgrade?cid=dypa60xm&cp=GingerFalsePremium-OneTimePayment-Extension"
+                       ng-click="main.reportPremiumClicked()"
+                    >Purchase 60% off Premium</a>
+
+                    <a target="_blank"
+                       ng-switch-when="2"
+                       href="https://www.gingersoftware.com/online_store/ginger_upgrade?cp=GingerFalsePremium-UnlimitedGracePeriod-Extension"
+                       ng-click="main.reportPremiumClicked()"
+                    >Purchase new subscription</a>
+
+                    <a target="_blank"
+                       ng-switch-default
+                       href="https://www.gingersoftware.com/online_store/ginger_upgrade?cp=GingerFalsePremium-UnknownReason-Extension"
+                       ng-click="main.reportPremiumClicked()"
+                    >Purchase new subscription</a>
+                </div>
+
+                <div class="popup-body__premium-banner__bottom-text">
+                    If you have any questions or believe you received this message in error, please
+                    <a target="_blank"
+                       href="https://www.gingersoftware.com/contactus"
+                    >contact us</a>.
+                </div>
+            </div>
+
+
+            <div class="popup-body-row" ng-class="{'rephrase' : main.ui.rephraseOpen}">
+                <div class="popup-body-editor-wrapper" ng-class="{'rephrase-open': main.ui.rephraseOpen, 'small': !main.ui.rephraseOpen && (!session || session.isAnonym || main.premiumBanner.isShow)}">
+                    <div class="popup-body-editor-clear" ng-if="!main.ui.rephraseOpen && main.ui.showCopyButton" ng-click="main.ui.clearText()">
+                        &#10005;
+                    </div>
+
+                    <div class="popup-body-editor-buttons">
+                        <a ng-click="main.ui.copyText()" ng-if="main.ui.showCopyButton" class="popup-body-editor-button copy">
+                            <span class="copy" ng-if="!main.ui.showCopySuccess"><i class="gingericon-duplicate"></i> Copy text</span>
+                            <span class="copied" ng-if="main.ui.showCopySuccess"><i class="gingericon-check"></i> Copied</span>
+                        </a>
+                    </div>
+                    <div ng-if="!main.ui.rephraseOpen" class="popup-body-floatingG" rel="noopener">
+                        <span></span>
+                    </div>
+
+                    <div ng-show="!main.ui.rephraseOpen"
+                         ginger-widget-mode="contenteditable"
+                         class="popup-body-editor"
+                         id="mini-writer"
+                         contenteditable="true"
+                         spellcheck="false"
+                         placeholder="Type, paste or select text from any website"></div>
+                    <div ng-show="main.ui.rephraseOpen"
+                         class="popup-body-editor rephrase"
+                         contenteditable="false"
+                         id="rephraser"
+                         spellcheck="false"
+                         placeholder="No sentences to rephrase..."></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-rephrase" ng-if="main.ui.rephraseOpen">
+            <div class="popup-rephrase-header">
+                <h3>Rephrase</h3>
+                <div class="popup-rephrase-header-controls">
+                    <a ng-class="{'disabled': main.ui.previousDisabled}" ng-click="main.rephrase.step('backward')"><i class="gingericon-caret-left"></i>&nbsp; Previous</a><a ng-class="{'disabled': main.ui.nextDisabled}" ng-click="main.rephrase.step('forward')">Next &nbsp;<i class="gingericon-caret-right"></i></a><a ng-click="main.ui.closeRephrase()">Done</a>
+                </div>
+            </div>
+            <div class="popup-rephrase-body" ng-class="{'loading': main.rephrase.loading, 'limited' : main.rephrase.limited}">
+                <div class="popup-rephrase-body-limit" ng-if="main.rephrase.limited">
+                    <div class="popup-rephrase-body-limit-left">
+                        <div class="popup-rephrase-body-limit-title">
+                            Unlimited Rephrasing
+                        </div>
+                        <p>
+                            Inspiring alternatives to boost your<br>
+                            creativity, clarity and style.
+                        </p>
+                    </div>
+<!--domprog                    <a ng-click="main.reporterGA('Premium', 'Click Rephrase Premium', 'Click Rephrase Premium', null)" href="https://www.gingersoftware.com/online_store/ginger_upgrade?cp=GingerChromeExtension-Rephrase-MiniWriter&autk={{main.session.token}}" target="_blank" class="popup-rephrase-body-limit-button">-->
+                    <a href="https://www.gingersoftware.com/online_store/ginger_upgrade?cp=GingerChromeExtension-Rephrase-MiniWriter&autk={{main.session.token}}" target="_blank" class="popup-rephrase-body-limit-button">
+                        Go Premium
+                    </a>
+                </div>
+                <ul ng-if="main.rephrase.result.length">
+                    <li class="popup-rephrase-body-short-sentence" ng-if="main.ui.rephraseShortSentence">
+                        <b>The rephraser is best tuned for sentences between 4 and 30 words.</b>
+                    </li>
+                    <li ng-repeat="result in main.rephrase.result" ng-click="main.rephrase.use($index)" ng-class="{'active':($index===main.rephrase.selectedIndex)}">
+                        <a class="popup-rephrase-body-element">
+                            <div class="popup-rephrase-body-element-fragments">
+                                <span ng-repeat="fragment in result.fragments" ng-class="{'popup-rephrase-body-element-changed':fragment.changed}">{{fragment.text}}</span>
+                            </div>
+                            <div class="popup-rephrase-body-element-master">
+                                {{main.rephrase.masterPhrase}}
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <div class="popup-rephrase-body-empty" ng-if="!main.rephrase.result.length && !main.rephrase.loading">
+                    No alternatives found (text too short, too long or too complex)
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-foot" ng-if="!main.ui.rephraseOpen">
+            <div class="popup-foot-row mute">
+                <div class="popup-body-counter" ng-if="!main.ui.rephraseOpen" ng-class="{'popup-body-counter-limited': main.charcount>main.charLimit}" id="popup-body-counter">
+                    <span>{{main.charcount || 0}}</span>/{{main.charLimit}} <span class="popup-body-counter-warning"> Your text was partially checked.</span>
+                    <div ng-if="session.license !== undefined && session.license!==2" class="popup-body-counter-premium">
+                        <!-- GACall -->
+                        <a ng-click="main.reporterGA('Premium', 'Click Premium for Character Limit', null, null)" target="_blank" href="https://www.gingersoftware.com/online_store/ginger_upgrade?cp=GingerChromeExtension-CorrectionLimit-MiniWriter&autk={{session.token}}">Go Premium</a> to correct longer texts.
+                    </div>
+                </div>
+                <div class="popup-foot-buttons">
+                    <a ng-if="main.ui.showCopyButton"  ng-mousedown="main.ui.openRephrase($event)" class="popup-body-editor-button rephrase">
+                        <span><img src="../assets/rephrase-new-white.svg" alt=""> Rephrase</span>
+                    </a>
+                    <a class="popup-foot-button" ng-if="session && !session.isAnonym" title="Open writer" target="_blank" ng-click="main.ui.openBigWriter()" rel="noopener"><i class="gingericon-expand"></i></a>
+                </div>
+                <!--<a class="popup-foot-app" target="_blank" href="https://www.gingersoftware.com/myginger/apps"> <i class="gingericon-apps"></i> Ginger Apps</a>-->
+            </div>
+
+            <div ng-if="!session || session.isAnonym" class="popup-foot-row popup-foot-loggedout">
+                <div class="popup-foot-loggedout-left">
+                    Sign up <em>for free</em> to<br>
+                    unlock key features
+                </div>
+                <div class="popup-foot-loggedout-right">
+                    <ul>
+                        <li>
+                            Correct text as you type on any website
+                        </li>
+                        <li>
+                            Enable/Disable Ginger on preferred websites
+                        </li>
+                        <li>
+                            Store your personal dictionary
+                        </li>
+                    </ul>
+                    <div class="popup-foot-loggedout-right-actions">
+                        <a ng-click="main.ui.openAuthPage('signUp')" class="btn">Sign up</a><span class="popup-foot-loggedout-right-actions-login">Already have an account? <a ng-click="main.ui.openAuthPage()">Log in</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="selection-popup" ng-if="main.ui.showSelectionPopup">
+        <!--<div class="selection-popup">-->
+            <div class="selection-popup-overlay" ng-click="main.rejectReplaceContentWithSelection()"></div>
+            <div class="selection-popup-body">
+                <b>Do you want to check the selected text for mistakes?</b>
+                <span>If you do so, you'll lose your current text.</span>
+                <button type="button" class="btn decline" ng-click="main.rejectReplaceContentWithSelection()">
+                    No
+                </button>
+                <button type="button" class="btn" ng-click="main.acceptReplaceContentWithSelection()">
+                    Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
